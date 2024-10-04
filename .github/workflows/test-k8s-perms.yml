@@ -1,0 +1,35 @@
+name: test-k8s-permissions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubeconfig
+        uses: azure/k8s-set-context@v4
+        with:
+          method: service-account
+          k8s-url: 3.21.234.72:6443
+          k8s-secret: |                           # Replace the example secret below with the secret from your cluster
+            apiVersion: v1
+            data:
+              ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJVTh3R3U3VkpQeUF3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFd01EUXhPVFExTXpaYUZ3MHpOREV3TURJeE9UVXdNelphTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURUNVJvVnRWOXZHNCtSSktvVlhHUjRhZnZXaXJYdkFBdTZVaXhzd0hSNGRzUndzRVhtYXA4UHE2am0KZG1ROGhsRnhvNjMyV2lXK2pCN0htWEUzQTZOa1dCUmU3WlFqbnk5MG9ZZ0RxNzQ0YUlEdXhNYWwrTGNsNlhGWAppOGt5SlMrelBRc2xQb0JGV0srODlVMnVkbnhpVVZpdDF5STlaZmg0Y3NzN1NoQ2F5MnFKbE9sc09xdHh0Tm4zCm5BdGNpZXcrZGU4WTBUUUpTaXg4dHdHRWtLL2ZmcjU2S21VeTJkYUxRMGJJNTJuRVlwcVZ6L0U4UFNxSzZiVmQKTW5aakYvUWlwYUdGRitEcHVNS0lORlpsZzIyNGtyVjVnRnBrTDI0ZklKNGh3dVZtTVpYK1I2U2hseE1hblltSApFaHJaeG90ekRJYnZIWkNva2hoRDdTVWllOG1CQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJRQ0FMNDd0aUQ1bEtWYVJlNzlpcWlRenp2NmpqQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQzIvSXNiS0djUQpTTjF4OEVZWnZvYndsNHB0RjQvNVRvTG5NWGZwbU94UnBhQmxNMFVMVnN1MWZ0WTNoYjh0SGVMZ2FXa3YwRGh5CktyK09oM05uUkw1TVRZSDVKVDBiOWtPSkxZc2wvQmtNeG1PQm5xNXBXVEhiUEFIV0w4eG8wWmZhalB3K0UzSmYKSCtHMmhBcUlZa3kxb0pqZkZTV0VFUkZYZkRJUjlQNi9WODlaVVlBWTF0Tm5QdU5WMnA4VFRwYjQzeVlCdUN3ZgprdGQ3RUtnYWVrWnJXbUMrZ3pYZEd1eTdzY3hoWHJOODJvRVM3UnVIUnpuWXhMVUxOVXVoazRGYnY2QUxFOXJvCkhhZDdWZlJNamd1dkRXdHVlMGlCb29tTWIvNFZrUUNSSGdBU1pWMVY1VVEvQWsvRUc0WUl1bDhSTGtRK0I3c2UKOThnZGFSVTRXK0pwCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+              namespace: ZGVmYXVsdA==
+              token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNklqVjFhelZyWkdKMGRXOU1lWGR0YkZCMWVIVlVRWGRGTkhFNVVGaENRVXBzVjI4dFMzcFNabkZXTjFraWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbWRvWVMxellTMXpaV055WlhRaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNXVZVzFsSWpvaVoyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpYSjJhV05sTFdGalkyOTFiblF1ZFdsa0lqb2lNelF3WXpaaVlqQXRZelZsWlMwME16STNMVGhtTTJFdE0ySmhZelV6WkRsaE1USTJJaXdpYzNWaUlqb2ljM2x6ZEdWdE9uTmxjblpwWTJWaFkyTnZkVzUwT21SbFptRjFiSFE2WjJoaEluMC53T01Nd0c3WldxdXVueFBUTXRTRWtxN1BERWlkNEoyTVpZdGMtX1gycGpNOE0tVEp2TGZjWi1IdjRVM1puNUNiN2JZOVBMb2FUR2hjYVRfQjdTNVZTaFRCeEJnTEpsQ3BzakpzQ19BdWpSNnJMZEoyMDlBUDBpUnBaNDdDajd1QTRHNmJjQmtNbk5nTEQ4VHNXcW9oT3IxZm5BMTZQN0c1WmpmOGpwUU1iTERvSlgzTHVmbXh1eTNGNzJUNm9pZk5QTHF4Z0ptN0pRWnQyU0hGX2E3M2ZTVTZjSFY4UFBfbGtmWkZieUtPLWZuQ1QzTVk1bThuSkFOdjd2UEM3NGFncDNUMG45VGJVM2VhMERJcU4yQVNYcW1MZWVnWmFEeWMzNTVZWjY1ZkRiSnJVb05PWGx4N2R6MlRield3QU1iMzZWWFdjdERtX2Zsei1NaWNLUGt6UlE=
+            kind: Secret
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/last-applied-configuration: |
+                  {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{"kubernetes.io/service-account.name":"gha"},"name":"gha-sa-secret","namespace":"default"},"type":"kubernetes.io/service-account-token"}
+                kubernetes.io/service-account.name: gha
+                kubernetes.io/service-account.uid: 340c6bb0-c5ee-4327-8f3a-3bac53d9a126
+              creationTimestamp: "2024-10-04T19:52:50Z"
+              name: gha-sa-secret
+              namespace: default
+              resourceVersion: "753"
+              uid: fe98c6cf-55c1-4437-8706-2b6c764a4cca
+            type: kubernetes.io/service-account-token
+      - name: Get pods
+        run: kubectl get pods -n default
